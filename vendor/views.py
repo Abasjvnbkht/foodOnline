@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 
 from .forms import VendorForm
+from accounts.utils import send_verification_email
 from . models import Vendor
 from accounts.forms import UserForm
 from accounts.models import User, UserProfile
@@ -34,6 +35,10 @@ def registerVendor(request):
             # mishe b user profile dastrasi dash
             vendor.user_profile = user_profile
             vendor.save()
+
+            # send verification email
+            send_verification_email(request, user)
+
             messages.success(
                 request, 'Your account has been registered successfully! please wait for approval.')
             return redirect('registerVendor')

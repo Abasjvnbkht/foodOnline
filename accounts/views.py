@@ -76,6 +76,7 @@ def registerUser(request):
 
 def activate(request, uidb64, token):
     # activate user by setting the is_active status to true
+
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
         user = User._default_manager.get(pk=uid)

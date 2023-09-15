@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from django.contrib.messages import constants as messages
 from pathlib import Path
 from decouple import config
+import smtplib
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -149,9 +150,13 @@ MESSAGE_TAG = {
 
 
 # Email configuration
-EMAIL_BACKEND = config('EMAIL_BACKEND')
-EMAIL_HOST = config('EMAIL_HOST')
-EMAIL_PORT = config('EMAIL_PORT', cast=int)
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-EMAIL_USER_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'foodonlinebusinessite@gmail.com'
+EMAIL_HOST_PASSWORD = 'iibigoaasrldscxy'
+EMAIL_USE_TLS = True
+
+
+# session = smtplib.SMTP('smtp.gmail.com', 587)
+# print(session)

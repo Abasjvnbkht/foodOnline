@@ -18,14 +18,13 @@ def detectUser(user):
         return redirectUrl
 
 
-def send_verification_email(request, user):
+def send_verification_email(request, user, mail_subject, email_template):
     """
     in function baraye ersale email hasesh
     """
     current_site = get_current_site(request)
     # in site feli ra b man mide
-    mail_subject = 'Please Activate Your Accounts'
-    message = render_to_string('accounts/emails/account_verification_email.html', {
+    message = render_to_string(email_template, {
         # in body emaile
         'user': user,
         'domain': current_site,

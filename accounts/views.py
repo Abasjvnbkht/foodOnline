@@ -7,7 +7,7 @@ from django.utils.http import urlsafe_base64_decode
 
 
 from .forms import UserForm, VendorForm
-from . models import User, UserProfile
+from . models import User, UserProfile, Vendor
 from . utils import detectUser, send_verification_email
 
 
@@ -62,7 +62,7 @@ def registerVendor(request):
                 request, user, mail_subject, email_template)
 
             messages.success(
-                request, 'Your account has been registered successfully! please wait for approval.')
+                request, 'Registered successfully! Please check your E-Mail to confirm.')
             return redirect('registerVendor')
 
         else:
@@ -142,7 +142,8 @@ def activate(request, uidb64, token):
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
-        messages.success(request, 'Congratulation! your account is activated.')
+        messages.success(
+            request, 'Congratulation! your account is activated, Login now!')
         return redirect('myAccount')
     else:
         messages.error(request, 'Invalid activition link')
@@ -191,7 +192,11 @@ def custDashboard(request):
 @login_required(login_url='login')
 @user_passes_test(check_role_vendor)
 def vendorDashboard(request):
-    return render(request, 'accounts/vendorDashboard.html')
+    vendor = Vendor.objects.get(user=request.user)
+    context = {
+        'vendor': vendor,
+    }
+    return render(request, 'accounts/vendorDashboard.html', context)
 
 
 def forgot_password(request):
@@ -208,7 +213,7 @@ def forgot_password(request):
                 request, user, mail_subject, email_template)
 
             messages.success(
-                request, 'Please reset link has benn sent to your email address.')
+                request, 'Reset link has been sent to your E-Mail address.')
             return redirect('login')
         else:
             messages.error(request, 'Account does not exist!')
@@ -227,7 +232,7 @@ def reset_password_validate(request, uidb64, token):
     if user is not None and default_token_generator.check_token(user, token):
         # age user none nabashe v token doros bashe
         request.session['uid'] = uid
-        messages.info(request, 'Please reset your password')
+        messages.info(request, 'Now you can reset your old password')
         return redirect('reset_password')
     else:
         messages.error(request, 'This link has been expired!')

@@ -37,3 +37,10 @@ def send_verification_email(request, user, mail_subject, email_template):
     mail = EmailMessage(mail_subject, message, to=[to_email])
     # EmailMessage, packagiye k az an baraye ersale payame email estefade mikonim
     mail.send()
+
+
+def send_notfication(mail_subject, mail_template, context):
+    message = render_to_string(mail_template, context)
+    to_email = context['user'].email
+    mail = EmailMessage(mail_subject, message, to=[to_email])
+    mail.send()
